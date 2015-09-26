@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var holderHeight: NSLayoutConstraint!
@@ -26,7 +26,15 @@ class DetailViewController: UIViewController {
     var jsonPost: JSON!
     var audioRecorder: AVAudioRecorder!
     
+    let synth = AVSpeechSynthesizer()
+    var myUtterance = AVSpeechUtterance(string: "")
+    
     override func viewDidLoad() {
+        self.navigationController?.interactivePopGestureRecognizer.delegate = self
+        myUtterance = AVSpeechUtterance(string: "LA PUTA MADRE!")
+        myUtterance.rate = 0.07
+        synth.speakUtterance(myUtterance)
+        
         let url = NSURL(string: "http://contenidos.lanacion.com.ar/json/nota/\(postID)")
         Utils.makeJsonRequest(url!, callback: { (json, error) -> Void in
             if error != nil {
@@ -75,16 +83,10 @@ class DetailViewController: UIViewController {
         audioSession.setActive(true, error: nil)
         
         var documents: AnyObject = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.DocumentDirectory,  NSSearchPathDomainMask.UserDomainMask, true)[0]
-        var str =  documents.stringByAppendingPathComponent("recordTest.caf")
+        var str =  documents.stringByAppendingPathComponent("recordTest.m4a")
         var url = NSURL.fileURLWithPath(str as String)
         
-        var recordSettings = [AVFormatIDKey:kAudioFormatAppleIMA4,
-            AVSampleRateKey:44100.0,
-            AVNumberOfChannelsKey:2,AVEncoderBitRateKey:12800,
-            AVLinearPCMBitDepthKey:16,
-            AVEncoderAudioQualityKey:AVAudioQuality.Min.rawValue
-            
-        ]
+        var recordSettings = [AVFormatIDKey:kAudioFormatMPEG4AAC]
         
         println("url : \(url)")
         var error: NSError?
@@ -103,7 +105,7 @@ class DetailViewController: UIViewController {
         
 
         var paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
-        var getImagePath = paths.stringByAppendingPathComponent("recordTest.caf")
+        var getImagePath = paths.stringByAppendingPathComponent("recordTest.m4a")
 
         let data = NSData(contentsOfFile: getImagePath)
         
