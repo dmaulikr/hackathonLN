@@ -60,69 +60,36 @@ listenWidth();
         console.log( "ready!" );
         Parse.initialize("j8gPtolTeQ9lyCeT71kLUTNRDGM1x92UFy1dtYpT", "FKmwUpRdLxFt23sD8FkKmbe1hQ1X31PFhNpAU0Ux");
 
-        /*
-        var AudioComment = Parse.Object.extend("AudioComment");
-        var audioComment = new AudioComment();
-        audioComment.set("newsId", "ABBER");
-        audioComment.set("userId", 1337);
-        audioComment.set("newsUrl", "http://www.lanacion.com.ar/1831219-emotivo-encuentro-del-papa-francisco-con-chicos-e-inmigrantes-en-una-escuela-del-harlem");
-        audioComment.set("audioUrl", "http://www.w3schools.com/html/horse.ogg");
-
-        audioComment.save(null, {
-          success: function(audioComment) {
-            // Execute any logic that should take place after the object is saved.
-            alert('New object created with objectId: ' + audioComment.id);
-          },
-          error: function(audioComment, error) {
-            // Execute any logic that should take place if the save fails.
-            // error is a Parse.Error with an error code and message.
-            alert('Failed to create new object, with error code: ' + error.message);
-          }
-        });
-        
-*/
         var userId = getParameterByName("userId");
         var newsUrl = getParameterByName("newsUrl");
 
         $("#newIframe").attr("src", newsUrl);
 
-        /*var AudioComment = Parse.Object.extend("AudioComment");
-        var query = new Parse.Query(AudioComment);
-        query.get(id, {
-          success: function(audioComment) {
-            // The object was retrieved successfully.
-            console.log(audioComment);
-          },
-          error: function(object, error) {
-            // The object was not retrieved successfully.
-            // error is a Parse.Error with an error code and message.
-          }
-        });*/
         
-        var AudioComment = Parse.Object.extend("AudioComment");
+        var AudioComment = Parse.Object.extend("Audios");
         var query = new Parse.Query(AudioComment);
-        query.equalTo("userId", parseInt(userId));
-        query.equalTo("newsUrl", newsUrl);
+        query.equalTo("userID", userId);
+        query.equalTo("url", newsUrl);
 
         query.find({
           success: function(results) {
             var url = "";
             for (var i = 0; i < results.length; i++) {
               var object = results[i];
-              var audioUrl = object.get('audioUrl');
+              var audioUrl = object.get('audio').url();
 
               var audioHtml = '<div align="center" class="bg-success img-rounded">';
               audioHtml += '  <h2 id="comment">Comentario '+ (i+1)+'</h2>';
               audioHtml += ' <p> <image src="http://icons.iconarchive.com/icons/graphicloads/100-flat/256/sound-3-icon.png" style="width: 50px;height: 50px;"/></p>';
               audioHtml += '  <audio controls>';
-              audioHtml += '    <source src="' + audioUrl + '" type="audio/ogg">';
+              audioHtml += '    <source src="' + audioUrl + '" type="audio/aac">';
               audioHtml += '  Your browser does not support the audio element.';
               audioHtml += '  </audio>';
               audioHtml += '  <p> Creado: '+ object.get('createdAt') + ' </p>';
               audioHtml += '</div>';
 
               $('#audio').append(audioHtml);
-              console.log(object.id + ' - ' + object.get('userId'));
+              console.log(object.id + ' - ' + object.get('userID'));
             }
           },
           error: function(error) {
@@ -140,17 +107,17 @@ listenWidth();
 
         var userId = getParameterByName("userId");
         var queryList = new Parse.Query(AudioComment);
-        queryList.equalTo("userId", parseInt(userId));
+        queryList.equalTo("userID", userId);
 
         queryList.find({
           success: function(results) {
             var map = {};
             for (var i = 0; i < results.length; i++) {
               var object = results[i];
-              if(map[object.get('newsUrl')]) {
-                map[object.get('newsUrl')]++;
+              if(map[object.get('url')]) {
+                map[object.get('url')]++;
               } else {
-                map[object.get('newsUrl')] = 1;
+                map[object.get('url')] = 1;
               }
             }
 
