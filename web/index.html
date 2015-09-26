@@ -9,7 +9,7 @@
     <meta name="author" content="">
        <!--<link rel="icon" href="../../favicon.ico"> -->
 
-    <title>Justified Nav Template for Bootstrap</title>
+    <title>Hackathon La Nacion</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -27,6 +27,8 @@
     <![endif]-->
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="https://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
+    <script src="https://raw.githubusercontent.com/davidjbradshaw/iframe-resizer/master/js/iframeResizer.min.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
 
     <script>
       function getParameterByName(name) {
@@ -97,6 +99,7 @@
               audioHtml += '    <source src="' + audioUrl + '" type="audio/ogg">';
               audioHtml += '  Your browser does not support the audio element.';
               audioHtml += '  </audio>';
+              audioHtml += '  <p> Creado: '+ object.get('createdAt') + ' </p>';
               audioHtml += '</div>';
 
               $('#audio').append(audioHtml);
@@ -108,6 +111,57 @@
           }
         });
 
+
+      $( "#notiUsuario" ).click(function() {
+        $(".listNoti").remove();
+        $("#newIframe").hide();
+        $("#audio").hide();
+        $("#notiUsuario" ).parent().attr("class", "active");
+        $("#noti" ).parent().attr("class", "Notactive");
+
+        var userId = getParameterByName("userId");
+        var queryList = new Parse.Query(AudioComment);
+        queryList.equalTo("userId", parseInt(userId));
+
+        queryList.find({
+          success: function(results) {
+            var map = {};
+            for (var i = 0; i < results.length; i++) {
+              var object = results[i];
+              if(map[object.get('newsUrl')]) {
+                map[object.get('newsUrl')]++;
+              } else {
+                map[object.get('newsUrl')] = 1;
+              }
+            }
+
+              var listStr = '<div class="listNoti">';
+            var i = 1;
+            _.each(map, function(k,v) {
+              console.log(k + "   -    " + v );
+              listStr += '<h4>'+ i + ".- " + k + ' Comentarios en la siguiente noticia: </h4>';
+              listStr += '<p><a href = "index.html?userId=' + userId + '&newsUrl='+v+'">'+v+'</a></p>';
+              i++;
+
+            });
+            $("#leftDiv" ).append(listStr + '</div>');
+
+          },
+          error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+          }
+        });
+
+      });
+
+      $( "#noti" ).click(function() {
+        $("#newIframe").show();
+        $("#audio").show();
+        $(".listNoti").remove();
+        
+        $("#notiUsuario" ).parent().attr("class", "notactive");
+        $("#noti" ).parent().attr("class", "active");
+      });
 
       });
     </script>
@@ -122,23 +176,19 @@
       <!-- The justified navigation menu is meant for single line per list item.
            Multiple lines will require custom code not provided by Bootstrap. -->
       <div class="masthead">
-        <h3 class="text-muted">Project name</h3>
+        <h3 class="text-muted">Hackathon La Nacion</h3>
         <nav>
           <ul class="nav nav-justified">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Downloads</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
+            <li class="active"><a id="noti" href="#">Noticia</a></li>
+            <li><a id="notiUsuario" href="#">Noticias del usuario</a></li>
           </ul>
         </nav>
       </div>
 
 
       <!-- Example row of columns -->
-      <div class="row" style="height: 12000px;">
-        <div class="col-lg-8" style="height: 100%;">
+      <div id="divdiv" class="row" style="height: 10000px;">
+        <div  id="leftDiv"  class="col-lg-8" style="height: 100%;">
 
           <iframe id="newIframe" frameborder="0" scrolling="no"  style="height: 100% ; width: 100%" title="sample">
   &lt;p&gt;iframes are not supported by your browser.&lt;/p&gt;
@@ -146,7 +196,7 @@
 
         </div>
  
-        <div id="audio" class="col-lg-4">
+        <div  id="audio" class="col-lg-4">
 
         </div>
       </div>
