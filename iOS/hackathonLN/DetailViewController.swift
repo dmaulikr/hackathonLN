@@ -31,9 +31,6 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer.delegate = self
-        myUtterance = AVSpeechUtterance(string: "LA PUTA MADRE!")
-        myUtterance.rate = 0.07
-        synth.speakUtterance(myUtterance)
         
         let url = NSURL(string: "http://contenidos.lanacion.com.ar/json/nota/\(postID)")
         Utils.makeJsonRequest(url!, callback: { (json, error) -> Void in
@@ -56,6 +53,10 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.note.sizeToFit()
                 self.noteHeight.constant = self.note.frame.height
                 self.holderHeight.constant = self.noteHeight.constant
+                
+                self.myUtterance = AVSpeechUtterance(string: self.note.text)
+                self.myUtterance.rate = 0.07
+                self.synth.speakUtterance(self.myUtterance)
             }
         }, retryCount: 0)
     }

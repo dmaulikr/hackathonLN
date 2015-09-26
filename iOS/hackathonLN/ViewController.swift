@@ -56,7 +56,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         if lastNewsJSON[indexPath.row]["imagenes"].count > 0 {
             let imageURL = "http://bucket.lanacion.com.ar" + lastNewsJSON[indexPath.row]["imagenes"][0]["src"].stringValue
-            println("imageURL: \(imageURL)")
             Utils.getImageFromUrl(imageURL, callback: { (image) -> Void in
                 dispatch_async(dispatch_get_main_queue(), {
                     if let cellToUpdate = collectionView.cellForItemAtIndexPath(indexPath) {
