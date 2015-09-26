@@ -121,16 +121,20 @@ listenWidth();
               }
             }
 
-              var listStr = '<div class="listNoti">';
+              var listStr = '<div class="listNoti"><br> <table class="table">';
             var i = 1;
             _.each(map, function(k,v) {
               console.log(k + "   -    " + v );
-              listStr += '<h4>'+ i + ".- " + k + ' Comentarios en la siguiente noticia: </h4>';
-              listStr += '<p><a href = "index.html?userId=' + userId + '&newsUrl='+v+'">'+v+'</a></p>';
+              listStr += '<tbody><tr ';
+              if( (i%2) == 1) {
+              listStr +='class="active"';
+            }
+              listStr += '><th scope="row">'+ i + '.- </th> <td><b>' + k + ' Comentarios </b><br>';
+              listStr += '<a href = "crowsound.html?userId=' + userId + '&newsUrl='+v+'">'+v+'</a></td></tr>';
               i++;
 
             });
-            $("#leftDiv" ).append(listStr + '</div>');
+            $("#leftDiv" ).append(listStr + '</table></div>');
 
           },
           error: function(error) {
@@ -162,7 +166,7 @@ listenWidth();
       <!-- The justified navigation menu is meant for single line per list item.
            Multiple lines will require custom code not provided by Bootstrap. -->
       <div class="masthead">
-        <h3 style="color: #449187;font-size: 50px;" class="text-muted ">Crow Sound</h3>
+        <h3 style="color: #449187;font-size: 50px;" class="text-muted ">Crowsound</h3>
         <nav>
           <ul class="nav nav-justified">
             <li class="active"><a id="noti" href="#">Noticia</a></li>
