@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 class DetailViewController: UIViewController {
     
@@ -22,6 +23,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var titleHeight: NSLayoutConstraint!
     
     var postID: Int!
+    var audioRecorder: AVAudioRecorder!
     
     override func viewDidLoad() {
         let url = NSURL(string: "http://contenidos.lanacion.com.ar/json/nota/\(postID)")
@@ -37,7 +39,7 @@ class DetailViewController: UIViewController {
                 self.titleLabel.text = json["titulo"][0]["valor"].stringValue
                 self.titleLabel.sizeToFit()
                 self.titleHeight.constant = self.titleLabel.frame.height
-                self.categoryLabel.text = json["categoria"]["valor"].stringValue
+                self.categoryLabel.text = json["categoria"]["valor"].stringValue.uppercaseString
                 self.categoryLabel.sizeToFit()
                 self.categoryWidth.constant = self.categoryLabel.frame.width + 30
                 self.date.text = json["fecha"].stringValue
@@ -63,6 +65,40 @@ class DetailViewController: UIViewController {
         }
         
         return parsedContent
+    }
+    
+    @IBAction func recButton(sender: AnyObject) {
+        println("START RECORDING")
+        var audioSession:AVAudioSession = AVAudioSession.sharedInstance()
+        audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, error: nil)
+        audioSession.setActive(true, error: nil)
+        
+        var documents: AnyObject = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.DocumentDirectory,  NSSearchPathDomainMask.UserDomainMask, true)[0]
+        var str =  documents.stringByAppendingPathComponent("recordTest.caf")
+        var url = NSURL.fileURLWithPath(str as String)
+        
+        var recordSettings = [AVFormatIDKey:kAudioFormatAppleIMA4,
+            AVSampleRateKey:44100.0,
+            AVNumberOfChannelsKey:2,AVEncoderBitRateKey:12800,
+            AVLinearPCMBitDepthKey:16,
+            AVEncoderAudioQualityKey:AVAudioQuality.Max.rawValue
+            
+        ]
+        
+        println("url : \(url)")
+        var error: NSError?
+        
+        audioRecorder = AVAudioRecorder(URL:url, settings: recordSettings as [NSObject : AnyObject], error: &error)
+        if let e = error {
+            println(e.localizedDescription)
+        } else {
+            audioRecorder.record()
+        }
+    }
+    
+    @IBAction func stopButton(sender: AnyObject) {
+        println("STOP RECORDING")
+        audioRecorder.stop()
     }
     
     @IBAction func backButton(sender: AnyObject) {

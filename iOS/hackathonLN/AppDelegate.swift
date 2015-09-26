@@ -15,7 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        //Statusbar color
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+        
+//        Parse.enableLocalDatastore()
+//        
+//        Parse.setApplicationId("j8gPtolTeQ9lyCeT71kLUTNRDGM1x92UFy1dtYpT",
+//            clientKey: "q2rfVUaLAphfxzTpVYZEtXB2CohUHn1wrfK3ZhRB")
+        
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         return true
     }
 
