@@ -60,6 +60,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         myUtterance = AVSpeechUtterance(string: cell.title.text)
         myUtterance.rate = 0.07
+        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
         if Globals.sound == true {
             synth.speakUtterance(myUtterance)
         }
@@ -113,10 +114,17 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             onoffButton.setImage(UIImage(named: "soundON"), forState: .Normal)
         }else {
             Globals.sound = false
+            synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
             onoffButton.setImage(UIImage(named: "soundOFF"), forState: .Normal)
         }
         Globals.localStorage.setObject(Globals.sound.boolValue, forKey: "sound")
         Globals.localStorage.synchronize()
+    }
+    
+    override func motionBegan(motion: UIEventSubtype, withEvent event: UIEvent) {
+        if motion == UIEventSubtype.MotionShake {
+            synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
+        }
     }
 }
 

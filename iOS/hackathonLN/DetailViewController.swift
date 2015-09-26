@@ -153,11 +153,13 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
                 println(error)
             }else {
                 println(succeeded)
+                self.getVoiceNotes()
             }
         }
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
         var error = NSErrorPointer()
         let player: AVAudioPlayer = AVAudioPlayer(data: audioJSON[indexPath.row], error: error)
         if error != nil {
@@ -196,7 +198,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     
     override func motionBegan(motion: UIEventSubtype, withEvent event: UIEvent) {
         if motion == UIEventSubtype.MotionShake {
-            synth.pauseSpeakingAtBoundary(AVSpeechBoundary.Immediate)
+            synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
         }
     }
 }
