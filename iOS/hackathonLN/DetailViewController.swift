@@ -23,6 +23,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var titleHeight: NSLayoutConstraint!
     
     var postID: Int!
+    var jsonPost: JSON!
     var audioRecorder: AVAudioRecorder!
     
     override func viewDidLoad() {
@@ -35,7 +36,7 @@ class DetailViewController: UIViewController {
                 Utils.getImageFromUrl(imageURL, callback: { (image) -> Void in
                     self.image.image = image
                 })
-                
+                self.jsonPost = json
                 self.titleLabel.text = json["titulo"][0]["valor"].stringValue
                 self.titleLabel.sizeToFit()
                 self.titleHeight.constant = self.titleLabel.frame.height
@@ -81,7 +82,7 @@ class DetailViewController: UIViewController {
             AVSampleRateKey:44100.0,
             AVNumberOfChannelsKey:2,AVEncoderBitRateKey:12800,
             AVLinearPCMBitDepthKey:16,
-            AVEncoderAudioQualityKey:AVAudioQuality.Max.rawValue
+            AVEncoderAudioQualityKey:AVAudioQuality.Min.rawValue
             
         ]
         
@@ -99,6 +100,25 @@ class DetailViewController: UIViewController {
     @IBAction func stopButton(sender: AnyObject) {
         println("STOP RECORDING")
         audioRecorder.stop()
+        
+
+        var paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var getImagePath = paths.stringByAppendingPathComponent("recordTest.caf")
+
+        let data = NSData(contentsOfFile: getImagePath)
+        
+        var saveData = PFObject(className:"Audios")
+        saveData.setValue(PFFile(data: data!), forKey: "audio")
+        saveData.setValue("http://www.lanacion.com.ar/" + jsonPost["url"].stringValue, forKey: "url")
+        saveData.setValue(Globals.user.username, forKey: "userID")
+        
+        saveData.saveInBackgroundWithBlock { (succeeded: Bool, error: NSError?) -> Void in
+            if error != nil {
+                println(error)
+            }else {
+                println(succeeded)
+            }
+        }
     }
     
     @IBAction func backButton(sender: AnyObject) {
