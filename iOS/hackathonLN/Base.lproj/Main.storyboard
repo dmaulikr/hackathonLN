@@ -317,6 +317,19 @@
                                     <action selector="stopButton:" destination="nxN-7K-haI" eventType="touchUpInside" id="QYh-ah-KMm"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vgn-aq-n59">
+                                <rect key="frame" x="528" y="24" width="48" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="7eA-L8-IKV"/>
+                                    <constraint firstAttribute="height" constant="32" id="vWM-Z2-iR2"/>
+                                </constraints>
+                                <state key="normal" image="share">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareButton:" destination="nxN-7K-haI" eventType="touchUpInside" id="ahW-JI-HG7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -330,8 +343,10 @@
                             <constraint firstAttribute="trailing" secondItem="sq6-kb-IPH" secondAttribute="trailing" id="fUQ-Yf-jcU"/>
                             <constraint firstAttribute="trailing" secondItem="PU8-e7-rJR" secondAttribute="trailing" id="jVL-6v-Gk9"/>
                             <constraint firstItem="6Vd-J8-FeQ" firstAttribute="top" secondItem="PU8-e7-rJR" secondAttribute="bottom" id="kLE-hu-3Th"/>
+                            <constraint firstAttribute="trailing" secondItem="vgn-aq-n59" secondAttribute="trailing" constant="24" id="m6W-tT-j0h"/>
                             <constraint firstAttribute="trailing" secondItem="Ztn-zB-nKW" secondAttribute="trailing" id="oWf-ch-bFW"/>
                             <constraint firstItem="Ztn-zB-nKW" firstAttribute="top" secondItem="sq6-kb-IPH" secondAttribute="bottom" id="odM-y7-9Zx"/>
+                            <constraint firstItem="vgn-aq-n59" firstAttribute="top" secondItem="emW-pN-Cyx" secondAttribute="bottom" constant="4" id="ubM-CA-y46"/>
                             <constraint firstItem="6Vd-J8-FeQ" firstAttribute="top" secondItem="Ztn-zB-nKW" secondAttribute="bottom" id="vdp-2e-9g8"/>
                             <constraint firstAttribute="trailing" secondItem="b8d-uR-67b" secondAttribute="trailing" constant="8" id="wSG-qf-BhI"/>
                             <constraint firstItem="sq6-kb-IPH" firstAttribute="leading" secondItem="Cio-SM-p2h" secondAttribute="leading" id="yBc-2t-m9t"/>
@@ -396,7 +411,7 @@
                                     <action selector="loginButton:" destination="t6z-WC-fLH" eventType="touchUpInside" id="UgP-lc-Iq9"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Crowsound" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ylh-GP-4eh">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CrowSound" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ylh-GP-4eh">
                                 <rect key="frame" x="16" y="120" width="568" height="75"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="75" id="kfK-eZ-Cms"/>
@@ -458,6 +473,7 @@
         <image name="more" width="138" height="90"/>
         <image name="play" width="180" height="180"/>
         <image name="rec" width="240" height="240"/>
+        <image name="share" width="144" height="96"/>
         <image name="soundON" width="120" height="120"/>
     </resources>
 </document>

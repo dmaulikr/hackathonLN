@@ -27,6 +27,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     var jsonPost: JSON!
     var audioRecorder: AVAudioRecorder!
     var audioJSON: [NSData] = []
+    var imageToShare = UIImage()
     
     let synth = AVSpeechSynthesizer()
     var myUtterance = AVSpeechUtterance(string: "")
@@ -41,7 +42,10 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
             }else {
                 let imageURL = "http://bucket.lanacion.com.ar" + json["imagenes"][0]["src"].stringValue
                 Utils.getImageFromUrl(imageURL, callback: { (image) -> Void in
-                    self.image.image = image
+                    if image != nil {
+                        self.image.image = image
+                        self.imageToShare = image
+                    }
                 })
                 self.jsonPost = json
                 self.titleLabel.text = json["titulo"][0]["valor"].stringValue
@@ -189,6 +193,17 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         ret.height = 60
         
         return ret
+    }
+    @IBAction func shareButton(sender: AnyObject) {
+        if let shareURL = NSURL(string: "http://dev-f0go.com") {
+            let text = "#CrowSound"
+            var objectsToShare = []
+            
+            objectsToShare = [text, imageToShare, shareURL]
+            
+            let activityVC = UIActivityViewController(activityItems: objectsToShare as [AnyObject], applicationActivities: nil)
+            self.presentViewController(activityVC, animated: true, completion: nil)
+        }
     }
     
     @IBAction func backButton(sender: AnyObject) {
