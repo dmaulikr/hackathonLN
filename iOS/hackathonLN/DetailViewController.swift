@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-class DetailViewController: UIViewController, UIGestureRecognizerDelegate {
+class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, AVAudioPlayerDelegate {
     
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var holderHeight: NSLayoutConstraint!
@@ -21,10 +21,12 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var note: UILabel!
     @IBOutlet weak var noteHeight: NSLayoutConstraint!
     @IBOutlet weak var titleHeight: NSLayoutConstraint!
+    @IBOutlet weak var collection: UICollectionView!
     
     var postID: Int!
     var jsonPost: JSON!
     var audioRecorder: AVAudioRecorder!
+    var audioJSON: [NSData] = []
     
     let synth = AVSpeechSynthesizer()
     var myUtterance = AVSpeechUtterance(string: "")
@@ -57,8 +59,36 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.myUtterance = AVSpeechUtterance(string: self.note.text)
                 self.myUtterance.rate = 0.07
                 self.synth.speakUtterance(self.myUtterance)
+                self.getVoiceNotes()
             }
         }, retryCount: 0)
+    }
+    
+    func getVoiceNotes(){
+        var query = PFQuery(className:"Audios")
+        query.whereKey("userID", equalTo: Globals.user.username!)
+        query.whereKey("url", equalTo: "http://www.lanacion.com.ar/" + jsonPost["url"].stringValue)
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]?, error: NSError?) -> Void in
+            if error == nil {
+                println("Successfully retrieved \(objects!.count) scores.")
+                if let objects = objects {
+                    for object in objects {
+                        println(object.allKeys)
+                        object.valueForKey("audio")!.getDataInBackgroundWithBlock({ (data, error) -> Void in
+                            if error != nil {
+                                println(error)
+                            }else {
+                                self.audioJSON.append(NSData(data: data!))
+                                self.collection.reloadData()
+                            }
+                        })
+                    }
+                }
+            } else {
+                println("Error: \(error!) \(error!.userInfo!)")
+            }
+        }
     }
     
     func parseContent(json: JSON) -> String {
@@ -122,6 +152,38 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate {
                 println(succeeded)
             }
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        var error = NSErrorPointer()
+        let player: AVAudioPlayer = AVAudioPlayer(data: audioJSON[indexPath.row], error: error)
+        if error != nil {
+            println(error)
+        }
+        player.delegate = self
+        player.play()
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return audioJSON.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("DetailCollectionCell", forIndexPath: indexPath) as! DetailCollectionCell
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        var ret:CGSize!
+        
+        let flowlayout = collectionViewLayout as! UICollectionViewFlowLayout
+        ret = flowlayout.itemSize
+        
+        ret.width = 60
+        ret.height = 60
+        
+        return ret
     }
     
     @IBAction func backButton(sender: AnyObject) {

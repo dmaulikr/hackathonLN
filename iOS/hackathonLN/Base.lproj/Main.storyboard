@@ -244,26 +244,42 @@
                             </scrollView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PU8-e7-rJR">
                                 <rect key="frame" x="0.0" y="540" width="600" height="60"/>
+                                <color key="backgroundColor" red="0.0" green="0.41176470590000003" blue="0.59999999999999998" alpha="0.5" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="bCR-ck-yoz"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="y6q-zN-r0l">
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="y6q-zN-r0l">
                                     <size key="itemSize" width="60" height="60"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="jbg-LM-JQO">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="DetailCollectionCell" reuseIdentifier="DetailCollectionCell" id="jbg-LM-JQO" customClass="DetailCollectionCell" customModule="hackathonLN" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="klf-9M-LgM">
+                                                    <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                                </imageView>
+                                            </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="klf-9M-LgM" firstAttribute="top" secondItem="jbg-LM-JQO" secondAttribute="top" id="LMn-mY-hRc"/>
+                                            <constraint firstAttribute="trailing" secondItem="klf-9M-LgM" secondAttribute="trailing" id="Mne-rc-dbi"/>
+                                            <constraint firstAttribute="bottom" secondItem="klf-9M-LgM" secondAttribute="bottom" id="R4e-g4-41Y"/>
+                                            <constraint firstItem="klf-9M-LgM" firstAttribute="leading" secondItem="jbg-LM-JQO" secondAttribute="leading" id="tnE-W9-BGf"/>
+                                        </constraints>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="nxN-7K-haI" id="i0r-qw-eqI"/>
+                                    <outlet property="delegate" destination="nxN-7K-haI" id="E7k-yH-ybN"/>
+                                </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b8d-uR-67b">
                                 <rect key="frame" x="512" y="500" width="80" height="80"/>
@@ -308,6 +324,7 @@
                     <connections>
                         <outlet property="categoryLabel" destination="xnM-bt-ptL" id="1q4-nX-BDq"/>
                         <outlet property="categoryWidth" destination="66m-xr-FkZ" id="0CC-zS-jVg"/>
+                        <outlet property="collection" destination="PU8-e7-rJR" id="QPl-ur-l9m"/>
                         <outlet property="date" destination="10H-lS-49H" id="g5Q-4i-PaU"/>
                         <outlet property="holderHeight" destination="5ez-2C-UgH" id="ZRw-SE-3em"/>
                         <outlet property="image" destination="sq6-kb-IPH" id="vJi-rR-CMa"/>
@@ -423,6 +440,7 @@
     <resources>
         <image name="back" width="138" height="90"/>
         <image name="more" width="138" height="90"/>
+        <image name="play" width="180" height="180"/>
         <image name="rec" width="240" height="240"/>
     </resources>
 </document>
