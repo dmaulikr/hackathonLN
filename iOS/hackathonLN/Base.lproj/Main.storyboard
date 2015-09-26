@@ -125,9 +125,24 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="Axg-IZ-QbB"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="El3-Gr-foL">
+                                <rect key="frame" x="20" y="25" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="FT7-M7-ePy"/>
+                                    <constraint firstAttribute="width" constant="40" id="dfM-X5-0qe"/>
+                                </constraints>
+                                <state key="normal" image="soundON">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onoffButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="rsy-Bz-bGJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="NMb-uw-osg" secondAttribute="bottom" id="6SI-4Z-ne2"/>
+                            <constraint firstItem="El3-Gr-foL" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="5" id="8Ob-Fw-c6K"/>
+                            <constraint firstItem="El3-Gr-foL" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" id="Yyq-jc-G21"/>
                             <constraint firstItem="NMb-uw-osg" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="jhe-J0-pLN"/>
                             <constraint firstItem="NMb-uw-osg" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="-10" id="qaH-co-XNI"/>
                             <constraint firstAttribute="trailing" secondItem="NMb-uw-osg" secondAttribute="trailing" id="ztT-Lz-fHJ"/>
@@ -136,6 +151,7 @@
                     <navigationItem key="navigationItem" id="JTd-nj-dg0"/>
                     <connections>
                         <outlet property="collection" destination="NMb-uw-osg" id="S9h-vT-XWp"/>
+                        <outlet property="onoffButton" destination="El3-Gr-foL" id="mKC-ep-3zl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -442,5 +458,6 @@
         <image name="more" width="138" height="90"/>
         <image name="play" width="180" height="180"/>
         <image name="rec" width="240" height="240"/>
+        <image name="soundON" width="120" height="120"/>
     </resources>
 </document>

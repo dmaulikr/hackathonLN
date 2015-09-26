@@ -33,7 +33,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer.delegate = self
-        
+
         let url = NSURL(string: "http://contenidos.lanacion.com.ar/json/nota/\(postID)")
         Utils.makeJsonRequest(url!, callback: { (json, error) -> Void in
             if error != nil {
@@ -54,11 +54,14 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
                 self.note.text = self.parseContent(json["contenido"])
                 self.note.sizeToFit()
                 self.noteHeight.constant = self.note.frame.height
-                self.holderHeight.constant = self.noteHeight.constant
+                self.holderHeight.constant = self.noteHeight.constant - self.titleHeight.constant
                 
                 self.myUtterance = AVSpeechUtterance(string: self.note.text)
                 self.myUtterance.rate = 0.07
-                self.synth.speakUtterance(self.myUtterance)
+                if Globals.sound == true {
+                    self.synth.speakUtterance(self.myUtterance)
+                }
+
                 self.getVoiceNotes()
             }
         }, retryCount: 0)
@@ -187,6 +190,13 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     }
     
     @IBAction func backButton(sender: AnyObject) {
+        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
         self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    override func motionBegan(motion: UIEventSubtype, withEvent event: UIEvent) {
+        if motion == UIEventSubtype.MotionShake {
+            synth.pauseSpeakingAtBoundary(AVSpeechBoundary.Immediate)
+        }
     }
 }

@@ -14,6 +14,7 @@ struct Globals {
     static var screenSize: CGRect = UIScreen.mainScreen().bounds
     static var localStorage: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     static var user = PFUser()
+    static var sound = true
 }
 
 class Utils {

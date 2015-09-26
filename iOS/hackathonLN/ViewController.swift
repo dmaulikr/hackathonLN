@@ -13,6 +13,7 @@ import AVFoundation
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     @IBOutlet weak var collection: UICollectionView!
+    @IBOutlet weak var onoffButton: UIButton!
     
     var lastNewsJSON: JSON = []
     
@@ -20,10 +21,19 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     var myUtterance = AVSpeechUtterance(string: "")
     
     override func viewDidLoad() {
+        if Globals.localStorage.objectForKey("sound") != nil {
+            Globals.sound = Globals.localStorage.objectForKey("sound")!.boolValue
+            if Globals.sound == false {
+                onoffButton.setImage(UIImage(named: "soundOFF"), forState: .Normal)
+            }else {
+                onoffButton.setImage(UIImage(named: "soundON"), forState: .Normal)
+            }
+        }
         getLastNews()
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
         let vc = self.storyboard?.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
         vc.postID = lastNewsJSON[indexPath.row]["id"].intValue
         self.navigationController?.pushViewController(vc as DetailViewController, animated: true)
@@ -50,7 +60,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         myUtterance = AVSpeechUtterance(string: cell.title.text)
         myUtterance.rate = 0.07
-        synth.speakUtterance(myUtterance)
+        if Globals.sound == true {
+            synth.speakUtterance(myUtterance)
+        }
         
         cell.backImage.image = nil
         
@@ -95,5 +107,16 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }, retryCount: 0)
     }
 
+    @IBAction func onoffButton(sender: AnyObject) {
+        if Globals.sound == false {
+            Globals.sound = true
+            onoffButton.setImage(UIImage(named: "soundON"), forState: .Normal)
+        }else {
+            Globals.sound = false
+            onoffButton.setImage(UIImage(named: "soundOFF"), forState: .Normal)
+        }
+        Globals.localStorage.setObject(Globals.sound.boolValue, forKey: "sound")
+        Globals.localStorage.synchronize()
+    }
 }
 
