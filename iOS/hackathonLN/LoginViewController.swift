@@ -18,9 +18,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLoad() {
-        let blur = UIImage(named: "globos")!.applyBlurWithRadius(15, blurType: BOXFILTER, tintColor: UIColor.clearColor(), saturationDeltaFactor: 1, maskImage: nil)
-        backImage.image = blur
-        
         if Globals.user.isAuthenticated() == false {
             if Globals.localStorage.objectForKey("user") == nil {
                 showLoginView()

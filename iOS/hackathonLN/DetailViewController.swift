@@ -32,17 +32,21 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     var imageToShare = UIImage()
     var startPlayer: AVAudioPlayer!
     var stopPlayer: AVAudioPlayer!
+    var notePlayer: AVAudioPlayer!
     
     let synth = AVSpeechSynthesizer()
     var myUtterance = AVSpeechUtterance(string: "")
     
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer.delegate = self
-        var startSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("start", ofType: "mp3")!)
+        
+        
+        
+        var startSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("start", ofType: "wav")!)
         startPlayer = AVAudioPlayer(contentsOfURL: startSound, error: nil)
         startPlayer.prepareToPlay()
         
-        var stopSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("stop", ofType: "mp3")!)
+        var stopSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("stop", ofType: "wav")!)
         stopPlayer = AVAudioPlayer(contentsOfURL: stopSound, error: nil)
         stopPlayer.prepareToPlay()
 
@@ -95,7 +99,6 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
                 println("Successfully retrieved \(objects!.count) scores.")
                 if let objects = objects {
                     for object in objects {
-                        println(object.allKeys)
                         object.valueForKey("audio")!.getDataInBackgroundWithBlock({ (data, error) -> Void in
                             if error != nil {
                                 println(error)
@@ -133,25 +136,29 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         
         startPlayer.play()
         
-        var audioSession:AVAudioSession = AVAudioSession.sharedInstance()
-        audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, error: nil)
-        audioSession.setActive(true, error: nil)
-        
-        var documents: AnyObject = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.DocumentDirectory,  NSSearchPathDomainMask.UserDomainMask, true)[0]
-        var str =  documents.stringByAppendingPathComponent("recordTest.m4a")
-        var url = NSURL.fileURLWithPath(str as String)
-        
-        var recordSettings = [AVFormatIDKey:kAudioFormatMPEG4AAC]
-        
-        println("url : \(url)")
-        var error: NSError?
-        
-        audioRecorder = AVAudioRecorder(URL:url, settings: recordSettings as [NSObject : AnyObject], error: &error)
-        if let e = error {
-            println(e.localizedDescription)
-        } else {
-            audioRecorder.record()
-        }
+        delay(0.4, closure: { () -> () in
+            var err = NSErrorPointer()
+            var audioSession:AVAudioSession = AVAudioSession.sharedInstance()
+            audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, error: nil)
+            audioSession.setActive(true, error: nil)
+            audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker, error: err)
+            
+            var documents: AnyObject = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.DocumentDirectory,  NSSearchPathDomainMask.UserDomainMask, true)[0]
+            var str =  documents.stringByAppendingPathComponent("recordTest.m4a")
+            var url = NSURL.fileURLWithPath(str as String)
+            
+            var recordSettings = [AVFormatIDKey:kAudioFormatMPEG4AAC]
+            
+            println("url : \(url)")
+            var error: NSError?
+            
+            self.audioRecorder = AVAudioRecorder(URL:url, settings: recordSettings as [NSObject : AnyObject], error: &error)
+            if let e = error {
+                println(e.localizedDescription)
+            } else {
+                self.audioRecorder.record()
+            }
+        })
     }
     
     @IBAction func stopButton(sender: AnyObject) {
@@ -195,15 +202,18 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
-        var error = NSErrorPointer()
-        let player: AVAudioPlayer = AVAudioPlayer(data: audioJSON[indexPath.row], error: error)
-        if error != nil {
-            println(error)
+        if indexPath.row != audioJSON.count {
+            synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
+            var error = NSErrorPointer()
+            
+            notePlayer = AVAudioPlayer(data: audioJSON[indexPath.row], error: error)
+            notePlayer.prepareToPlay()
+            
+            notePlayer.prepareToPlay()
+            notePlayer.play()
         }
-        player.delegate = self
-        player.play()
     }
+    
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return audioJSON.count + 1
@@ -234,7 +244,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         return ret
     }
     @IBAction func shareButton(sender: AnyObject) {
-        if let shareURL = NSURL(string: "http://dev-f0go.com") {
+        if let shareURL = NSURL(string: "http://javadox.com/crowsound.html?userId=" + Globals.user.username! + "&newsUrl=http://www.lanacion.com.ar/" + jsonPost["url"].stringValue) {
             let text = "#CrowSound"
             var objectsToShare = []
             
