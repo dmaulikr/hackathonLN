@@ -19,21 +19,7 @@ class LoginViewController: UIViewController {
         backImage.image = blur
     }
     @IBAction func loginButton(sender: AnyObject) {
-        if FBSDKProfile.currentProfile() == nil {
-            FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "onProfileUpdated:", name:FBSDKProfileDidChangeNotification, object: nil)
-            let login: FBSDKLoginManager = FBSDKLoginManager()
-            login.logInWithReadPermissions(["public_profile", "user_photos"], handler: { (result, error) -> Void in
-                if error != nil {
-                    println(error)
-                }else if result.isCancelled {
-                    println("Cancel")
-                }else {
-                    println("👤 Facebook Login")
-                }
-            })
-        }else {
-            println("👤 Facebook Login")
-        }
+        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("NavController") as! NavController
+        self.presentViewController(vc, animated: false, completion: nil)
     }
 }
