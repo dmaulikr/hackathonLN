@@ -423,7 +423,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-UX-jfj">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backSplash" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-UX-jfj">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GVW-l5-aWJ">
@@ -512,6 +512,7 @@
     </scenes>
     <resources>
         <image name="back" width="138" height="90"/>
+        <image name="backSplash" width="1024" height="1024"/>
         <image name="more" width="138" height="90"/>
         <image name="play" width="180" height="180"/>
         <image name="rec" width="240" height="240"/>

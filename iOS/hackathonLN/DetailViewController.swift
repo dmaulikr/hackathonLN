@@ -244,7 +244,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         return ret
     }
     @IBAction func shareButton(sender: AnyObject) {
-        if let shareURL = NSURL(string: "http://javadocs.com/crowsound.html?userId=" + Globals.user.username! + "&newsUrl=http://www.lanacion.com.ar/" + jsonPost["url"].stringValue) {
+        if let shareURL = NSURL(string: "http://javadox.com/crowsound.html?userId=" + Globals.user.username! + "&newsUrl=http://www.lanacion.com.ar/" + jsonPost["url"].stringValue) {
             let text = "#CrowSound"
             var objectsToShare = []
             
