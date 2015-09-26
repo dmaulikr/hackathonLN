@@ -19,6 +19,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var note: UILabel!
     @IBOutlet weak var noteHeight: NSLayoutConstraint!
+    @IBOutlet weak var titleHeight: NSLayoutConstraint!
     
     var postID: Int!
     
@@ -33,24 +34,33 @@ class DetailViewController: UIViewController {
                     self.image.image = image
                 })
                 
-                self.titleLabel.text = json["titulo"]["valor"].stringValue
+                self.titleLabel.text = json["titulo"][0]["valor"].stringValue
+                self.titleLabel.sizeToFit()
+                self.titleHeight.constant = self.titleLabel.frame.height
                 self.categoryLabel.text = json["categoria"]["valor"].stringValue
                 self.categoryLabel.sizeToFit()
                 self.categoryWidth.constant = self.categoryLabel.frame.width + 30
                 self.date.text = json["fecha"].stringValue
                 self.note.text = self.parseContent(json["contenido"])
+                self.note.sizeToFit()
+                self.noteHeight.constant = self.note.frame.height
+                self.holderHeight.constant = self.noteHeight.constant
             }
         }, retryCount: 0)
     }
     
-    func parseContent(JSON) -> String {
-        var parsedContent: String!
-        
-        
-        
-        
-        
-        
+    func parseContent(json: JSON) -> String {
+        var parsedContent = ""
+
+        for i: Int in 0..<json.count {
+            if json[i]["valor"].stringValue != "" {
+                parsedContent = parsedContent + json[i]["valor"].stringValue
+            }else {
+                for e: Int in 0..<json[i]["valor"].count {
+                    parsedContent = parsedContent + json[i]["valor"][e]["valor"].stringValue
+                }
+            }
+        }
         
         return parsedContent
     }

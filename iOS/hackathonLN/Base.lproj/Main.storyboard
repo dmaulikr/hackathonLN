@@ -181,11 +181,13 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="400" id="5ez-2C-UgH"/>
-                                            <constraint firstAttribute="width" constant="600" id="aOH-aG-U8Q"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DLL-RW-Ifl">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DLL-RW-Ifl">
                                         <rect key="frame" x="30" y="30" width="540" height="27.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="27.5" id="mp4-wS-9aw"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -202,17 +204,17 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.34999999999999964" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10H-lS-49H">
-                                        <rect key="frame" x="118" y="79" width="100" height="25"/>
+                                        <rect key="frame" x="118" y="79" width="160" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="100" id="0We-3h-GFw"/>
+                                            <constraint firstAttribute="width" constant="160" id="0We-3h-GFw"/>
                                             <constraint firstAttribute="height" constant="25" id="vu1-uw-Kng"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nva-5Q-fyp">
-                                        <rect key="frame" x="30" y="125.5" width="540" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nva-5Q-fyp">
+                                        <rect key="frame" x="30" y="125" width="540" height="20.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20.5" id="WAp-Z0-D8A"/>
                                         </constraints>
@@ -245,6 +247,7 @@
                         <constraints>
                             <constraint firstItem="Ztn-zB-nKW" firstAttribute="leading" secondItem="Cio-SM-p2h" secondAttribute="leading" id="Kaa-ya-79r"/>
                             <constraint firstItem="bJA-dM-nP8" firstAttribute="leading" secondItem="Cio-SM-p2h" secondAttribute="leading" constant="20" id="KyZ-hQ-x8t"/>
+                            <constraint firstItem="2QZ-7P-wVT" firstAttribute="width" secondItem="Cio-SM-p2h" secondAttribute="width" id="Nbh-4q-3Qo"/>
                             <constraint firstItem="bJA-dM-nP8" firstAttribute="top" secondItem="emW-pN-Cyx" secondAttribute="bottom" constant="8" id="W7H-eG-Sxr"/>
                             <constraint firstItem="sq6-kb-IPH" firstAttribute="top" secondItem="Cio-SM-p2h" secondAttribute="top" id="Z64-5J-B5T"/>
                             <constraint firstAttribute="trailing" secondItem="sq6-kb-IPH" secondAttribute="trailing" id="fUQ-Yf-jcU"/>
@@ -262,6 +265,7 @@
                         <outlet property="image" destination="sq6-kb-IPH" id="vJi-rR-CMa"/>
                         <outlet property="note" destination="Nva-5Q-fyp" id="Zbt-kZ-NC5"/>
                         <outlet property="noteHeight" destination="WAp-Z0-D8A" id="lzt-o9-7pp"/>
+                        <outlet property="titleHeight" destination="mp4-wS-9aw" id="vtL-xa-K3G"/>
                         <outlet property="titleLabel" destination="DLL-RW-Ifl" id="UlY-HF-G6Y"/>
                     </connections>
                 </viewController>

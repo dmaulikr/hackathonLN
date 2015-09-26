@@ -31,7 +31,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LastNewsCell", forIndexPath: indexPath) as! LastNewsCell
-
+        
         cell.categoryWidth.constant = 0
         cell.categoryHeight.constant = 0
         
@@ -45,16 +45,20 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         cell.title.text = lastNewsJSON[indexPath.row]["titulo"][0]["valor"].stringValue
         
         cell.backImage.image = nil
-        let imageURL = "http://bucket.lanacion.com.ar" + lastNewsJSON[indexPath.row]["imagenes"][0]["src"].stringValue
-        Utils.getImageFromUrl(imageURL, callback: { (image) -> Void in
-            dispatch_async(dispatch_get_main_queue(), {
-                if let cellToUpdate = collectionView.cellForItemAtIndexPath(indexPath) {
-                    let blur = image.applyBlurWithRadius(15, blurType: BOXFILTER, tintColor: UIColor.clearColor(), saturationDeltaFactor: 1, maskImage: nil)
-                    cell.backImage.image = blur
-                }
-            })
-        })
         
+        if lastNewsJSON[indexPath.row]["imagenes"].count > 0 {
+            let imageURL = "http://bucket.lanacion.com.ar" + lastNewsJSON[indexPath.row]["imagenes"][0]["src"].stringValue
+            println("imageURL: \(imageURL)")
+            Utils.getImageFromUrl(imageURL, callback: { (image) -> Void in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let cellToUpdate = collectionView.cellForItemAtIndexPath(indexPath) {
+                        let blur = image.applyBlurWithRadius(15, blurType: BOXFILTER, tintColor: UIColor.clearColor(), saturationDeltaFactor: 1, maskImage: nil)
+                        cell.backImage.image = blur
+                    }
+                })
+            })
+        }
+
         return cell
     }
     
