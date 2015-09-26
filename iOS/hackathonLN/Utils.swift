@@ -12,6 +12,8 @@ import UIKit
 struct Globals {
     static var imageCache = [String : UIImage]()
     static var screenSize: CGRect = UIScreen.mainScreen().bounds
+    static var localStorage: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    static var user = PFUser()
 }
 
 class Utils {
