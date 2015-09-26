@@ -77,6 +77,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     }
                 })
             })
+        }else {
+            let blur = UIImage(named: "noDisp")!.applyBlurWithRadius(15, blurType: BOXFILTER, tintColor: UIColor.clearColor(), saturationDeltaFactor: 1, maskImage: nil)
+            cell.backImage.image = blur
         }
 
         return cell

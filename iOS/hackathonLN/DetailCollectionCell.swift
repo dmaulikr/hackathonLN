@@ -11,4 +11,6 @@ import UIKit
 
 class DetailCollectionCell: UICollectionViewCell {
     
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var playIcon: UIImageView!
 }

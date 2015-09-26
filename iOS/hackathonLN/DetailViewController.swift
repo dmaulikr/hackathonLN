@@ -22,18 +22,29 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     @IBOutlet weak var noteHeight: NSLayoutConstraint!
     @IBOutlet weak var titleHeight: NSLayoutConstraint!
     @IBOutlet weak var collection: UICollectionView!
+    @IBOutlet weak var notificationView: UIView!
+    @IBOutlet weak var notificationText: UILabel!
     
     var postID: Int!
     var jsonPost: JSON!
     var audioRecorder: AVAudioRecorder!
     var audioJSON: [NSData] = []
     var imageToShare = UIImage()
+    var startPlayer: AVAudioPlayer!
+    var stopPlayer: AVAudioPlayer!
     
     let synth = AVSpeechSynthesizer()
     var myUtterance = AVSpeechUtterance(string: "")
     
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer.delegate = self
+        var startSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("start", ofType: "mp3")!)
+        startPlayer = AVAudioPlayer(contentsOfURL: startSound, error: nil)
+        startPlayer.prepareToPlay()
+        
+        var stopSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("stop", ofType: "mp3")!)
+        stopPlayer = AVAudioPlayer(contentsOfURL: stopSound, error: nil)
+        stopPlayer.prepareToPlay()
 
         let url = NSURL(string: "http://contenidos.lanacion.com.ar/json/nota/\(postID)")
         Utils.makeJsonRequest(url!, callback: { (json, error) -> Void in
@@ -45,6 +56,8 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
                     if image != nil {
                         self.image.image = image
                         self.imageToShare = image
+                    }else {
+                        self.image.image = UIImage(named: "noDisp")
                     }
                 })
                 self.jsonPost = json
@@ -72,6 +85,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     }
     
     func getVoiceNotes(){
+        self.audioJSON = []
         var query = PFQuery(className:"Audios")
         query.whereKey("userID", equalTo: Globals.user.username!)
         query.whereKey("url", equalTo: "http://www.lanacion.com.ar/" + jsonPost["url"].stringValue)
@@ -116,6 +130,9 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     
     @IBAction func recButton(sender: AnyObject) {
         println("START RECORDING")
+        
+        startPlayer.play()
+        
         var audioSession:AVAudioSession = AVAudioSession.sharedInstance()
         audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, error: nil)
         audioSession.setActive(true, error: nil)
@@ -141,11 +158,17 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         println("STOP RECORDING")
         audioRecorder.stop()
         
+        stopPlayer.play()
 
         var paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
         var getImagePath = paths.stringByAppendingPathComponent("recordTest.m4a")
 
         let data = NSData(contentsOfFile: getImagePath)
+        
+        self.notificationText.text = "Subiendo audio..."
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.notificationView.alpha = 1
+        })
         
         var saveData = PFObject(className:"Audios")
         saveData.setValue(PFFile(data: data!), forKey: "audio")
@@ -155,8 +178,17 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         saveData.saveInBackgroundWithBlock { (succeeded: Bool, error: NSError?) -> Void in
             if error != nil {
                 println(error)
+                self.notificationText.text = "Error de conexión"
             }else {
                 println(succeeded)
+                self.notificationText.text = "Subida completa"
+                
+                self.delay(0.8) {
+                    UIView.animateWithDuration(0.5, animations: { () -> Void in
+                        self.notificationView.alpha = 0
+                    })
+                }
+                
                 self.getVoiceNotes()
             }
         }
@@ -174,11 +206,18 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return audioJSON.count
+        return audioJSON.count + 1
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("DetailCollectionCell", forIndexPath: indexPath) as! DetailCollectionCell
+        cell.label.text = "Audio \(indexPath.row + 1)"
+        if indexPath.row == audioJSON.count {
+            cell.playIcon.image = nil
+            cell.label.text = ""
+        }else {
+            cell.playIcon.image = UIImage(named: "play")
+        }
         return cell
     }
     
@@ -189,7 +228,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         let flowlayout = collectionViewLayout as! UICollectionViewFlowLayout
         ret = flowlayout.itemSize
         
-        ret.width = 60
+        ret.width = 138
         ret.height = 60
         
         return ret
@@ -215,5 +254,18 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         if motion == UIEventSubtype.MotionShake {
             synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
         }
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
     }
 }
