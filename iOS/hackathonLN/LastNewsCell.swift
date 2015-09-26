@@ -10,5 +10,10 @@ import Foundation
 import UIKit
 
 class LastNewsCell: UICollectionViewCell {
-    
+    @IBOutlet weak var backImage: UIImageView!
+    @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var categoryWidth: NSLayoutConstraint!
+    @IBOutlet weak var categoryHeight: NSLayoutConstraint!
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var date: UILabel!
 }

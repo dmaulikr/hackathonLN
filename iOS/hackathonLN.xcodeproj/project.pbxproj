@@ -17,6 +17,7 @@
 		5968C8A71BB5E92A009E2F7A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5968C8A61BB5E92A009E2F7A /* Utils.swift */; };
 		5968C8AA1BB5EAED009E2F7A /* LastNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5968C8A91BB5EAED009E2F7A /* LastNewsCell.swift */; };
 		5968C8AC1BB5F54A009E2F7A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5968C8AB1BB5F54A009E2F7A /* DetailViewController.swift */; };
+		5968C8B61BB611BD009E2F7A /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 5968C8B51BB611BD009E2F7A /* UIImage+ImageEffects.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,9 @@
 		5968C8A61BB5E92A009E2F7A /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5968C8A91BB5EAED009E2F7A /* LastNewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastNewsCell.swift; sourceTree = "<group>"; };
 		5968C8AB1BB5F54A009E2F7A /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		5968C8AD1BB6100F009E2F7A /* hackathonLN-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "hackathonLN-Bridging-Header.h"; sourceTree = "<group>"; };
+		5968C8B41BB611BD009E2F7A /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		5968C8B51BB611BD009E2F7A /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,9 +94,12 @@
 				5968C8A81BB5E978009E2F7A /* Views */,
 				5968C8881BB5E6DF009E2F7A /* Main.storyboard */,
 				5968C8A41BB5E915009E2F7A /* SwiftyJSON.swift */,
+				5968C8B41BB611BD009E2F7A /* UIImage+ImageEffects.h */,
+				5968C8B51BB611BD009E2F7A /* UIImage+ImageEffects.m */,
 				5968C88B1BB5E6DF009E2F7A /* Images.xcassets */,
 				5968C88D1BB5E6DF009E2F7A /* LaunchScreen.xib */,
 				5968C8821BB5E6DF009E2F7A /* Supporting Files */,
+				5968C8AD1BB6100F009E2F7A /* hackathonLN-Bridging-Header.h */,
 			);
 			path = hackathonLN;
 			sourceTree = "<group>";
@@ -181,6 +188,7 @@
 				TargetAttributes = {
 					5968C87E1BB5E6DF009E2F7A = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 8P26MFFBDF;
 					};
 					5968C8931BB5E6DF009E2F7A = {
 						CreatedOnToolsVersion = 6.4;
@@ -234,6 +242,7 @@
 			files = (
 				5968C8A51BB5E915009E2F7A /* SwiftyJSON.swift in Sources */,
 				5968C8871BB5E6DF009E2F7A /* ViewController.swift in Sources */,
+				5968C8B61BB611BD009E2F7A /* UIImage+ImageEffects.m in Sources */,
 				5968C8AA1BB5EAED009E2F7A /* LastNewsCell.swift in Sources */,
 				5968C8AC1BB5F54A009E2F7A /* DetailViewController.swift in Sources */,
 				5968C8851BB5E6DF009E2F7A /* AppDelegate.swift in Sources */,
@@ -364,9 +373,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = hackathonLN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "hackathonLN/hackathonLN-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -374,9 +387,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = hackathonLN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "hackathonLN/hackathonLN-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -433,6 +449,7 @@
 				5968C8A01BB5E6DF009E2F7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5968C8A11BB5E6DF009E2F7A /* Build configuration list for PBXNativeTarget "hackathonLNTests" */ = {
 			isa = XCConfigurationList;
@@ -441,6 +458,7 @@
 				5968C8A31BB5E6DF009E2F7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
