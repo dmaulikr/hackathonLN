@@ -57,7 +57,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
                 self.holderHeight.constant = self.noteHeight.constant - self.titleHeight.constant
                 
                 self.myUtterance = AVSpeechUtterance(string: self.note.text)
-                self.myUtterance.rate = 0.07
+                self.myUtterance.rate = 0.1
                 if Globals.sound == true {
                     self.synth.speakUtterance(self.myUtterance)
                 }

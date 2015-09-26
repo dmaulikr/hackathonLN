@@ -59,7 +59,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         cell.title.text = lastNewsJSON[indexPath.row]["titulo"][0]["valor"].stringValue
         
         myUtterance = AVSpeechUtterance(string: cell.title.text)
-        myUtterance.rate = 0.07
+        myUtterance.rate = 0.1
         synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
         if Globals.sound == true {
             synth.speakUtterance(myUtterance)
