@@ -336,7 +336,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-UX-jfj">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GVW-l5-aWJ">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GVW-l5-aWJ">
                                 <rect key="frame" x="153" y="494" width="295" height="56"/>
                                 <color key="backgroundColor" red="0.0078431372550000003" green="0.4549019608" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -372,22 +372,29 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="IBi-cz-V3k">
+                                <rect key="frame" x="281" y="281" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="4Lz-UX-jfj" secondAttribute="trailing" id="0tr-4M-Zk9"/>
                             <constraint firstAttribute="trailing" secondItem="ylh-GP-4eh" secondAttribute="trailing" constant="16" id="4a7-tV-HlA"/>
                             <constraint firstItem="b3K-l2-sIr" firstAttribute="top" secondItem="4Lz-UX-jfj" secondAttribute="bottom" id="IIu-jE-0c0"/>
+                            <constraint firstAttribute="centerY" secondItem="IBi-cz-V3k" secondAttribute="centerY" id="PH4-rD-0an"/>
                             <constraint firstItem="4Lz-UX-jfj" firstAttribute="top" secondItem="uqV-KH-eKs" secondAttribute="top" id="TCH-Qa-CM3"/>
                             <constraint firstItem="4Lz-UX-jfj" firstAttribute="leading" secondItem="uqV-KH-eKs" secondAttribute="leading" id="VpO-L6-bp4"/>
                             <constraint firstItem="ylh-GP-4eh" firstAttribute="top" secondItem="PCg-FW-3Sm" secondAttribute="bottom" constant="100" id="f3g-mU-AfQ"/>
                             <constraint firstItem="ylh-GP-4eh" firstAttribute="leading" secondItem="uqV-KH-eKs" secondAttribute="leading" constant="16" id="mZA-Pe-l4P"/>
+                            <constraint firstAttribute="centerX" secondItem="IBi-cz-V3k" secondAttribute="centerX" id="qJW-sJ-dOH"/>
                             <constraint firstItem="b3K-l2-sIr" firstAttribute="top" secondItem="GVW-l5-aWJ" secondAttribute="bottom" constant="50" id="sd0-OA-iQt"/>
                             <constraint firstAttribute="centerX" secondItem="GVW-l5-aWJ" secondAttribute="centerX" id="yE3-WH-E5g"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="backImage" destination="4Lz-UX-jfj" id="2PZ-Qf-4Ot"/>
+                        <outlet property="loginButton" destination="GVW-l5-aWJ" id="NvK-B2-Lb7"/>
+                        <outlet property="spinner" destination="IBi-cz-V3k" id="uYi-zx-hG0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hKv-IK-e6a" userLabel="First Responder" sceneMemberID="firstResponder"/>

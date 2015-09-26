@@ -14,11 +14,37 @@ import MobileCoreServices
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var backImage: UIImageView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLoad() {
         let blur = UIImage(named: "globos")!.applyBlurWithRadius(15, blurType: BOXFILTER, tintColor: UIColor.clearColor(), saturationDeltaFactor: 1, maskImage: nil)
         backImage.image = blur
+        
+        if Globals.user.isAuthenticated() == false {
+            if Globals.localStorage.objectForKey("user") == nil {
+                showLoginView()
+            }else {
+                PFUser.logInWithUsernameInBackground(Globals.localStorage.objectForKey("user") as! String, password:Globals.localStorage.objectForKey("pass") as! String) {
+                    (user: PFUser?, error: NSError?) -> Void in
+                    if user != nil {
+                        println("👋 Welcome back \(user!.username!)!")
+                        Globals.user = user!
+                        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("NavController") as! NavController
+                        self.presentViewController(vc, animated: false, completion: nil)
+                    } else {
+                        println("😓 Login error")
+                    }
+                }
+            }
+        }
     }
+    
+    func showLoginView() {
+        spinner.hidden = true
+        loginButton.hidden = false
+    }
+    
     @IBAction func loginButton(sender: AnyObject) {
         if FBSDKProfile.currentProfile() == nil {
             FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
@@ -31,6 +57,7 @@ class LoginViewController: UIViewController {
                     println("Cancel")
                 }else {
                     println("👤 Facebook Login")
+                    self.loginButton.hidden = true
                 }
             })
         }else {
