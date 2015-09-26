@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Parse
+import Bolts
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,10 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Statusbar color
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         
-//        Parse.enableLocalDatastore()
-//        
-//        Parse.setApplicationId("j8gPtolTeQ9lyCeT71kLUTNRDGM1x92UFy1dtYpT",
-//            clientKey: "q2rfVUaLAphfxzTpVYZEtXB2CohUHn1wrfK3ZhRB")
+        Parse.enableLocalDatastore()
+        
+        Parse.setApplicationId("j8gPtolTeQ9lyCeT71kLUTNRDGM1x92UFy1dtYpT",
+           clientKey: "q2rfVUaLAphfxzTpVYZEtXB2CohUHn1wrfK3ZhRB")
         
         return true
     }
