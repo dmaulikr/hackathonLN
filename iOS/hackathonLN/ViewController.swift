@@ -8,12 +8,16 @@
 
 import UIKit
 import Foundation
+import AVFoundation
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     @IBOutlet weak var collection: UICollectionView!
     
     var lastNewsJSON: JSON = []
+    
+    let synth = AVSpeechSynthesizer()
+    var myUtterance = AVSpeechUtterance(string: "")
     
     override func viewDidLoad() {
         getLastNews()
@@ -44,11 +48,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         cell.title.text = lastNewsJSON[indexPath.row]["titulo"][0]["valor"].stringValue
         
+        myUtterance = AVSpeechUtterance(string: cell.title.text)
+        myUtterance.rate = 0.07
+        synth.speakUtterance(myUtterance)
+        
         cell.backImage.image = nil
         
         if lastNewsJSON[indexPath.row]["imagenes"].count > 0 {
             let imageURL = "http://bucket.lanacion.com.ar" + lastNewsJSON[indexPath.row]["imagenes"][0]["src"].stringValue
-            println("imageURL: \(imageURL)")
             Utils.getImageFromUrl(imageURL, callback: { (image) -> Void in
                 dispatch_async(dispatch_get_main_queue(), {
                     if let cellToUpdate = collectionView.cellForItemAtIndexPath(indexPath) {

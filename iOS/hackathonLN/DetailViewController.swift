@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var holderHeight: NSLayoutConstraint!
@@ -23,9 +23,15 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var titleHeight: NSLayoutConstraint!
     
     var postID: Int!
+    var jsonPost: JSON!
     var audioRecorder: AVAudioRecorder!
     
+    let synth = AVSpeechSynthesizer()
+    var myUtterance = AVSpeechUtterance(string: "")
+    
     override func viewDidLoad() {
+        self.navigationController?.interactivePopGestureRecognizer.delegate = self
+        
         let url = NSURL(string: "http://contenidos.lanacion.com.ar/json/nota/\(postID)")
         Utils.makeJsonRequest(url!, callback: { (json, error) -> Void in
             if error != nil {
@@ -35,7 +41,7 @@ class DetailViewController: UIViewController {
                 Utils.getImageFromUrl(imageURL, callback: { (image) -> Void in
                     self.image.image = image
                 })
-                
+                self.jsonPost = json
                 self.titleLabel.text = json["titulo"][0]["valor"].stringValue
                 self.titleLabel.sizeToFit()
                 self.titleHeight.constant = self.titleLabel.frame.height
@@ -47,6 +53,10 @@ class DetailViewController: UIViewController {
                 self.note.sizeToFit()
                 self.noteHeight.constant = self.note.frame.height
                 self.holderHeight.constant = self.noteHeight.constant
+                
+                self.myUtterance = AVSpeechUtterance(string: self.note.text)
+                self.myUtterance.rate = 0.07
+                self.synth.speakUtterance(self.myUtterance)
             }
         }, retryCount: 0)
     }
@@ -74,16 +84,10 @@ class DetailViewController: UIViewController {
         audioSession.setActive(true, error: nil)
         
         var documents: AnyObject = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.DocumentDirectory,  NSSearchPathDomainMask.UserDomainMask, true)[0]
-        var str =  documents.stringByAppendingPathComponent("recordTest.caf")
+        var str =  documents.stringByAppendingPathComponent("recordTest.m4a")
         var url = NSURL.fileURLWithPath(str as String)
         
-        var recordSettings = [AVFormatIDKey:kAudioFormatAppleIMA4,
-            AVSampleRateKey:44100.0,
-            AVNumberOfChannelsKey:2,AVEncoderBitRateKey:12800,
-            AVLinearPCMBitDepthKey:16,
-            AVEncoderAudioQualityKey:AVAudioQuality.Max.rawValue
-            
-        ]
+        var recordSettings = [AVFormatIDKey:kAudioFormatMPEG4AAC]
         
         println("url : \(url)")
         var error: NSError?
@@ -99,6 +103,25 @@ class DetailViewController: UIViewController {
     @IBAction func stopButton(sender: AnyObject) {
         println("STOP RECORDING")
         audioRecorder.stop()
+        
+
+        var paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var getImagePath = paths.stringByAppendingPathComponent("recordTest.m4a")
+
+        let data = NSData(contentsOfFile: getImagePath)
+        
+        var saveData = PFObject(className:"Audios")
+        saveData.setValue(PFFile(data: data!), forKey: "audio")
+        saveData.setValue("http://www.lanacion.com.ar/" + jsonPost["url"].stringValue, forKey: "url")
+        saveData.setValue(Globals.user.username, forKey: "userID")
+        
+        saveData.saveInBackgroundWithBlock { (succeeded: Bool, error: NSError?) -> Void in
+            if error != nil {
+                println(error)
+            }else {
+                println(succeeded)
+            }
+        }
     }
     
     @IBAction func backButton(sender: AnyObject) {
