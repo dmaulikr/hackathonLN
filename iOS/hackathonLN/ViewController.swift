@@ -35,7 +35,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         cell.categoryWidth.constant = 0
         cell.categoryHeight.constant = 0
         
-        cell.categoryLabel.text = lastNewsJSON[indexPath.row]["categoria"]["valor"].stringValue
+        cell.categoryLabel.text = lastNewsJSON[indexPath.row]["categoria"]["valor"].stringValue.uppercaseString
         cell.categoryLabel.sizeToFit()
         cell.categoryWidth.constant = cell.categoryLabel.frame.width + 30
         cell.categoryHeight.constant = 25
