@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- 
+    file:///Users/nfmelendez/workplaces/hackathonLN/web/index.html?userId=1337&newsUrl=http://www.lanacion.com.ar/1831219-emotivo-encuentro-del-papa-francisco-con-chicos-e-inmigrantes-en-una-escuela-del-harlem
+    -->
     <meta name="description" content="">
     <meta name="author" content="">
        <!--<link rel="icon" href="../../favicon.ico"> -->
@@ -29,6 +31,22 @@
     <script src="https://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
     <script src="https://raw.githubusercontent.com/davidjbradshaw/iframe-resizer/master/js/iframeResizer.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
+
+
+    <script type="text/javascript">
+
+        function listenWidth( e ) {
+          console.log($(window).width());
+            if($(window).width()<1200)
+            {           
+              $("#audio").remove().insertBefore($("#leftDiv"));
+            } else {
+              $("#audio").remove().insertAfter($("#leftDiv"));
+            }
+        }
+            $(document).load($(window).bind("resize", listenWidth));
+listenWidth();
+    </script>
 
     <script>
       function getParameterByName(name) {
