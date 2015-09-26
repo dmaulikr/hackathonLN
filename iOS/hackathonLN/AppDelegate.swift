@@ -9,6 +9,8 @@
 import UIKit
 import Parse
 import Bolts
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            clientKey: "q2rfVUaLAphfxzTpVYZEtXB2CohUHn1wrfK3ZhRB")
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        Fabric.with([Crashlytics.self()])
         
         return true
     }
