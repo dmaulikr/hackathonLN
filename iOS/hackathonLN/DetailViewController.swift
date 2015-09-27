@@ -37,10 +37,9 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
     let synth = AVSpeechSynthesizer()
     var myUtterance = AVSpeechUtterance(string: "")
     
+    var sitio:String!
+    
     override func viewDidLoad() {
-        self.navigationController?.interactivePopGestureRecognizer.delegate = self
-        
-        
         
         var startSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("start", ofType: "wav")!)
         startPlayer = AVAudioPlayer(contentsOfURL: startSound, error: nil)
@@ -82,6 +81,14 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
                 if Globals.sound == true {
                     self.synth.speakUtterance(self.myUtterance)
                 }
+                
+                if json["sitio_id"].intValue == 1 {
+                    self.sitio = "lanacion"
+                }else if json["sitio_id"].intValue == 26 {
+                    self.sitio = "canchallena"
+                }else {
+                    self.sitio = "SiNoMePasasBienUnaURLQueQueresQueHaga"
+                }
 
                 self.getVoiceNotes()
             }
@@ -92,7 +99,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         self.audioJSON = []
         var query = PFQuery(className:"Audios")
         query.whereKey("userID", equalTo: Globals.user.username!)
-        query.whereKey("url", equalTo: "http://www.lanacion.com.ar/" + jsonPost["url"].stringValue)
+        query.whereKey("url", equalTo: "http://www." + sitio + ".com.ar/" + jsonPost["url"].stringValue)
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
@@ -179,7 +186,8 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         
         var saveData = PFObject(className:"Audios")
         saveData.setValue(PFFile(data: data!), forKey: "audio")
-        saveData.setValue("http://www.lanacion.com.ar/" + jsonPost["url"].stringValue, forKey: "url")
+        
+        saveData.setValue("http://www." + sitio + ".com.ar/" + jsonPost["url"].stringValue, forKey: "url")
         saveData.setValue(Globals.user.username, forKey: "userID")
         
         saveData.saveInBackgroundWithBlock { (succeeded: Bool, error: NSError?) -> Void in
@@ -244,7 +252,8 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate, UICol
         return ret
     }
     @IBAction func shareButton(sender: AnyObject) {
-        if let shareURL = NSURL(string: "http://javadox.com/crowsound.html?userId=" + Globals.user.username! + "&newsUrl=http://www.lanacion.com.ar/" + jsonPost["url"].stringValue) {
+        
+        if let shareURL = NSURL(string: "http://javadox.com/crowsound.html?userId=" + Globals.user.username! + "&newsUrl=http://www." + sitio + ".com.ar/" + jsonPost["url"].stringValue) {
             let text = "#CrowSound"
             var objectsToShare = []
             
